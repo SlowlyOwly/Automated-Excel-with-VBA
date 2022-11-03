@@ -1,0 +1,330 @@
+
+Sub openFile()
+
+Dim sFolder As String
+
+    'Chose file to open'
+
+    With Application.FileDialog(msoFileDialogFilePicker)
+
+        .Title = "Wybierz plik"
+
+        If .Show = -1 Then
+
+            sFolder = .SelectedItems(1)
+
+        Else
+
+            MsgBox "You didn't chose a file to download data"
+
+        End If
+
+ 
+
+    End With
+
+ 
+
+    Workbooks.Open (sFolder)
+
+ 
+
+End Sub
+
+ 
+
+Sub import()
+
+   
+
+    'Importing data from chosed file'
+
+ 
+
+    ActiveSheet.range("A2:I999").Copy
+
+    Workbooks("Automated Excel with VBA.xlsm").Worksheets("Sheet1").range("F3").PasteSpecial Paste:=xlPasteValues
+
+    Application.CutCopyMode = False
+
+   
+
+    ActiveSheet.range("J2:U999").Copy
+
+    Workbooks("Automated Excel with VBA.xlsm").Worksheets("Sheet1").range("P3").PasteSpecial Paste:=xlPasteValues
+
+    Application.CutCopyMode = False
+
+    
+
+End Sub
+
+ 
+
+Sub closeFile()
+
+ 
+
+    'Closing file with data to download'
+
+ 
+
+    ActiveWorkbook.Close SaveChanges:=False
+
+ 
+
+End Sub
+
+ 
+
+Sub goToCell()
+
+ 
+
+    range("O3").Select
+
+ 
+
+End Sub
+
+ 
+
+Sub list()
+
+ 
+
+    'Creating dropdown list for whole "O" column from data in column "D"'
+
+   
+
+    
+
+    Dim range As range
+
+    Dim cell As range
+
+   
+
+    Set range = range("O3:O999")
+
+   
+
+    For Each cell In range
+
+   
+
+    Dim list As String
+
+    list = Replace(cell.EntireRow.Columns("D").Value, ";", ",")
+
+    With cell.Validation
+
+        .Delete
+
+        .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
+        xlBetween, Formula1:=list
+
+        .IgnoreBlank = True
+
+        .InCellDropdown = True
+
+        .InputTitle = ""
+
+        .ErrorTitle = ""
+
+        .InputMessage = ""
+
+        .ErrorMessage = ""
+
+        .ShowInput = True
+
+        .ShowError = True
+
+    End With
+
+   
+
+    Next cell
+
+   
+
+    MsgBox "Select the appropriate category in column O and verify the position according to the new list in column B", , "Data downloaded"
+
+   
+
+    
+
+End Sub
+
+ 
+
+Sub copyNotBlank()
+
+ 
+
+    'Coping data from column "O" if not blank cell and pasting in column "N"'
+
+ 
+
+    Dim range As range
+
+    Dim cell As range
+
+ 
+
+    Set range = range("O3:O999")
+
+ 
+
+    For Each cell In range
+
+   
+
+        If Not IsEmpty(komorka.Value) Then
+
+            cell.Copy
+
+            cell.EntireRow.Columns("N").PasteSpecial Paste:=xlPasteValues
+
+            Application.CutCopyMode = False
+
+        End If
+
+   
+
+    Next cell
+
+   
+
+End Sub
+
+ 
+
+Sub copyItemNewNumber()
+
+ 
+
+
+    'Copy Item new number from column "B" to column "K"'
+
+    Workbooks("Automated Excel with VBA.xlsm").Worksheets("Sheet1").range("B3:B999").Copy
+
+    Workbooks("Automated Excel with VBA.xlsm").Worksheets("Sheet1").range("K3:K999").PasteSpecial Paste:=xlPasteValues
+
+    Application.CutCopyMode = False
+
+ 
+
+End Sub
+
+ 
+
+Sub exportSelection()
+
+ 
+
+    range("F2:AA2", Selection.End(xlDown)).Copy
+
+ 
+
+End Sub
+
+ 
+
+Sub pasteInNew()
+
+ 
+
+   
+
+    'Pasting selected range of data in new excel workbook'
+
+ 
+
+    Workbooks.Add
+
+   
+
+    ActiveWorkbook.ActiveSheet.Paste
+
+   
+
+    Application.CutCopyMode = False
+
+   
+
+    'Delating useless copied column'
+
+    ActiveWorkbook.ActiveSheet.Columns("J").Delete
+
+ 
+
+End Sub
+
+ 
+
+Sub formatingColumns()
+
+ 
+
+    'Formating columns size in new workbook'
+
+ 
+
+    ActiveWorkbook.ActiveSheet.Columns("A").ColumnWidth = 33
+
+    ActiveWorkbook.ActiveSheet.Columns("B:G").ColumnWidth = 20
+
+    ActiveWorkbook.ActiveSheet.Columns("H").ColumnWidth = 36
+
+    ActiveWorkbook.ActiveSheet.Columns("I").ColumnWidth = 20
+
+    ActiveWorkbook.ActiveSheet.Columns("J").ColumnWidth = 47
+
+    ActiveWorkbook.ActiveSheet.Columns("K").ColumnWidth = 13
+
+    ActiveWorkbook.ActiveSheet.Columns("L:M").ColumnWidth = 32
+
+    ActiveWorkbook.ActiveSheet.Columns("N").ColumnWidth = 77
+
+    ActiveWorkbook.ActiveSheet.Columns("O:U").ColumnWidth = 40
+
+    ActiveWorkbook.ActiveSheet.Rows("1:999").AutoFit
+
+ 
+
+End Sub
+
+ 
+
+Sub saveAs()
+
+ 
+
+    plik = Application.GetSaveAsFilename("New workbook with data", "Excel Files, *.xlsx", 1, "Save as new to aceptation", "&Save")
+
+    Debug.Print plik
+
+ 
+
+    If plik = False Then
+
+        MsgBox "File NOT saved"
+
+        Exit Sub
+
+    Else
+
+       Application.DisplayAlerts = False
+
+        ActiveWorkbook.saveAs (plik)
+
+        Application.DisplayAlerts = True
+
+        MsgBox "New file saved successfully"
+
+    End If
+
+ 
+
+End Sub
