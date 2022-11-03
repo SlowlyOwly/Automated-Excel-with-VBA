@@ -1,0 +1,15 @@
+Sub Export_Click()
+
+    Call Sheet1.copyNotBlank
+
+    Call Sheet1.copyItemNewNumber
+
+    Call Sheet1.exportSelection
+
+    Call Sheet1.pasteInNew
+
+    Call Sheet1.formatingColumns
+
+    Call Sheet1.saveAs
+
+End Sub
