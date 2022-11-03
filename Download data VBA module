@@ -1,0 +1,13 @@
+Sub Download_Click()
+
+    Call Sheet1.openFile
+
+    Call Sheet1.import
+
+    Call Sheet1.closeFile
+
+    Call Sheet1.goToCell
+
+    Call Sheet1.list
+
+End Sub
