@@ -1,0 +1,22 @@
+Sub Clear_Data()
+
+'Clearing data from form'
+
+    range("F3:AA3").Select
+
+    range(Selection, Selection.End(xlDown)).Select
+
+    Selection.ClearContents
+
+    range("O3").Select
+
+    range(Selection, Selection.End(xlDown)).Select
+
+    Selection.Validation.Delete
+
+    range(Selection, Cells(1)).Select
+
+    range("A3").Select
+
+   
+End Sub
